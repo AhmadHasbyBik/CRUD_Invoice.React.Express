@@ -1,27 +1,27 @@
-// models/product.js
+// models/productsold.js
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize('widatech-test', 'root', '', {
   dialect: 'mysql',
   host: 'localhost'
 });
 
-const Product = sequelize.define('Product', {
-  name: {
+const ProductSold = sequelize.define('ProductSold', {
+  item: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  price: {
-    type: DataTypes.FLOAT,
-    allowNull: false
-  },
-  stock: {
+  quantity: {
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  category: {
-    type: DataTypes.STRING,
+  totalCogs: {
+    type: DataTypes.FLOAT,
+    allowNull: false
+  },
+  totalPrice: {
+    type: DataTypes.FLOAT,
     allowNull: false
   }
 });
 
-module.exports = Product;
+module.exports = ProductSold;

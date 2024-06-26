@@ -1,27 +1,29 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Invoice extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
+// models/invoice.js
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = new Sequelize('widatech-test', 'root', '', {
+  dialect: 'mysql',
+  host: 'localhost'
+});
+const Invoice = sequelize.define('Invoice', {
+  date: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
+  customer: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  salesperson: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  paymentType: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  notes: {
+    type: DataTypes.TEXT
   }
-  Invoice.init({
-    date: DataTypes.DATEONLY,
-    customerName: DataTypes.STRING,
-    salespersonName: DataTypes.STRING,
-    notes: DataTypes.TEXT,
-    totalAmount: DataTypes.DECIMAL
-  }, {
-    sequelize,
-    modelName: 'Invoice',
-  });
-  return Invoice;
-};
+});
+
+module.exports = Invoice;

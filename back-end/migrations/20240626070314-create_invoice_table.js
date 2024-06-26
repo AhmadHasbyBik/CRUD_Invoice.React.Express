@@ -1,7 +1,7 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Invoices', {
       id: {
         allowNull: false,
@@ -10,19 +10,23 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       date: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATE,
+        allowNull: false
       },
-      customerName: {
-        type: Sequelize.STRING
+      customer: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      salespersonName: {
-        type: Sequelize.STRING
+      salesperson: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      paymentType: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       notes: {
         type: Sequelize.TEXT
-      },
-      totalAmount: {
-        type: Sequelize.DECIMAL
       },
       createdAt: {
         allowNull: false,
@@ -34,7 +38,8 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface, Sequelize) {
+
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Invoices');
   }
 };
