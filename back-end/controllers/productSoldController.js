@@ -1,23 +1,35 @@
-// controllers/productSoldController.js
-const ProductSold = require('../models/productSold');
-
-// Create
+const ProductSold = require('../models/productSold'); // Import the models
+const Product = require('../models/product');
 exports.createProductSold = async (req, res) => {
   try {
-    const { ProductId, InvoiceId, item, quantity, totalCogs, totalPrice } = req.body;
+    const { item, quantity, totalCogs, totalPrice, productId } = req.body;
+
+    // Find the product by its ID
+    const product = await Product.findByPk(productId);
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    // Create the ProductSold record
     const newProductSold = await ProductSold.create({
-      ProductId,
-      InvoiceId,
       item,
       quantity,
       totalCogs,
-      totalPrice
+      totalPrice,
+      ProductId: productId // Link the product sold to the product
     });
+
+    // Update the product stock
+    product.stock -= quantity;
+    await product.save();
+
     res.status(201).json(newProductSold);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // Read
 exports.getAllProductSolds = async (req, res) => {

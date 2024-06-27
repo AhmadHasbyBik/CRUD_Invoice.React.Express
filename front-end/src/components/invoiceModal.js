@@ -1,76 +1,120 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addInvoice } from '../redux/invoiceSlice';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addInvoice } from "../redux/invoiceSlice";
 
-const InvoiceModal = ({ closeModal }) => {
+const InvoiceModal = ({ product, onClose, onShowSoldProductModal }) => {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
-    date: '',
-    customerName: '',
-    salespersonName: '',
-    notes: '',
-    products: [],
+
+  const [invoiceData, setInvoiceData] = useState({
+    date: "",
+    customer: "",
+    salesperson: "",
+    paymentType: "Cash", // Default value
+    notes: "",
+    quantity: 1,
   });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInvoiceData({
+      ...invoiceData,
+      [name]: value,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addInvoice(formData))
-      .then(() => {
-        alert('Invoice added successfully!');
-        closeModal();
-      })
-      .catch((error) => {
-        alert('Failed to add invoice: ' + error.message);
-      });
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+    dispatch(addInvoice({
+      ...invoiceData,
+      products: [
+        {
+          productId: product.id,
+        },
+      ],
+    }))
+    .unwrap()
+    .then(() => {
+      onShowSoldProductModal();
+      onClose();
+    })
+    .catch((error) => {
+      console.error("Error saving invoice:", error);
     });
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Add Invoice</h2>
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white rounded-lg p-6 w-1/2">
+        <h2 className="text-2xl font-bold mb-4">Create Invoice</h2>
         <form onSubmit={handleSubmit}>
-          <label>Date:</label>
-          <input type="date" name="date" value={formData.date} onChange={handleChange} required />
-          <br />
-
-          <label>Customer Name:</label>
-          <input
-            type="text"
-            name="customerName"
-            value={formData.customerName}
-            onChange={handleChange}
-            required
-          />
-          <br />
-
-          <label>Salesperson Name:</label>
-          <input
-            type="text"
-            name="salespersonName"
-            value={formData.salespersonName}
-            onChange={handleChange}
-            required
-          />
-          <br />
-
-          <label>Notes:</label>
-          <textarea name="notes" value={formData.notes} onChange={handleChange} />
-          <br />
-
-          {/* Add products input (you can use autocomplete or select dropdown for products) */}
-
-          <button type="submit">Add Invoice</button>
-          <button type="button" onClick={closeModal}>
-            Cancel
+          <div className="mb-4">
+            <label className="block text-gray-700">Date</label>
+            <input
+              type="date"
+              name="date"
+              value={invoiceData.date}
+              onChange={handleChange}
+              className="mt-1 block w-full border rounded py-2 px-3"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Customer Name</label>
+            <input
+              type="text"
+              name="customer"
+              value={invoiceData.customer}
+              onChange={handleChange}
+              className="mt-1 block w-full border rounded py-2 px-3"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Salesperson Name</label>
+            <input
+              type="text"
+              name="salesperson"
+              value={invoiceData.salesperson}
+              onChange={handleChange}
+              className="mt-1 block w-full border rounded py-2 px-3"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Payment Type</label>
+            <select
+              name="paymentType"
+              value={invoiceData.paymentType}
+              onChange={handleChange}
+              className="mt-1 block w-full border rounded py-2 px-3"
+              required
+            >
+              <option value="Cash">Cash</option>
+              <option value="Credit">Credit</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Notes</label>
+            <textarea
+              name="notes"
+              value={invoiceData.notes}
+              onChange={handleChange}
+              className="mt-1 block w-full border rounded py-2 px-3"
+            />
+          </div>
+          <button
+            type="submit"
+            className="mt-4 px-4 py-2 bg-green-500 text-white rounded-2xl"
+          >
+            Submit Invoice
           </button>
         </form>
+        <button
+          onClick={onClose}
+          className="mt-4 px-4 py-2 bg-red-500 text-white rounded-2xl"
+        >
+          Close
+        </button>
       </div>
     </div>
   );

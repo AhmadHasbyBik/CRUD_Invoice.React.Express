@@ -1,18 +1,53 @@
-// controllers/productController.js
 const Product = require('../models/product');
+const upload = require('../middleware/multer'); // Multer middleware yang sudah di-setup
+const multer = require('multer');
 
-// Create
 exports.createProduct = async (req, res) => {
   try {
-    const { name, price, category } = req.body;
-    const newProduct = await Product.create({
-      name,
-      price,
-      category
+    // Upload file gambar terlebih dahulu menggunakan multer
+    upload.single('image')(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        // Akan menangkap error dari multer (misalnya, ukuran file terlalu besar)
+        return res.status(400).json({ error: err.message });
+      } else if (err) {
+        // Akan menangkap error lain yang dihasilkan oleh multer
+        return res.status(400).json({ error: err.message });
+      }
+
+      // Setelah berhasil upload file, dapatkan data dari req.body
+      const { name, price, stock, category } = req.body;
+
+      // Pastikan semua field yang diperlukan ada
+      if (!name || !price || !stock || !category) {
+        return res.status(400).json({ error: "All fields are required." });
+      }
+
+      let image = '';
+      if (req.file) {
+        image = req.file.filename;
+      }
+
+      // Buat produk baru
+      const newProduct = await Product.create({
+        name,
+        price,
+        stock,
+        category,
+        image: image || ''
+      });
+
+      res.status(201).json(newProduct);
     });
-    res.status(201).json(newProduct);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    // Tangani error dari Sequelize
+    if (err.name === 'SequelizeValidationError') {
+      // Handle validation error
+      const errors = err.errors.map(error => error.message);
+      return res.status(400).json({ error: errors.join(', ') });
+    } else {
+      // Tangani error lainnya
+      res.status(500).json({ error: err.message });
+    }
   }
 };
 

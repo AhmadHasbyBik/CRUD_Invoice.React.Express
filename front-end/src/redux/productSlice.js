@@ -10,6 +10,30 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+export const addProduct = createAsyncThunk(
+  'products/addProduct',
+  async (newProduct) => {
+    const response = await axios.post('http://localhost:5000/api/products', newProduct);
+    return response.data;
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  'products/deleteProduct',
+  async (productId) => {
+    await axios.delete(`http://localhost:5000/api/products/${productId}`);
+    return productId;
+  }
+);
+
+export const updateProduct = createAsyncThunk(
+  'products/updateProduct',
+  async ({ productId, updatedProduct }) => {
+    const response = await axios.put(`http://localhost:5000/api/products/${productId}`, updatedProduct);
+    return response.data;
+  }
+);
+
 const initialState = {
   products: [],
   loading: false,
@@ -30,6 +54,28 @@ const productsSlice = createSlice({
         state.products = action.payload;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(addProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products.push(action.payload); // Menambahkan produk baru ke array
+      })
+      .addCase(addProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deleteProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = state.products.filter(product => product.id !== action.payload);
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

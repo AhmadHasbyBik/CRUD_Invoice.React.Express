@@ -8,20 +8,24 @@ const sequelize = new Sequelize('widatech-test', 'root', '', {
 const Product = sequelize.define('Product', {
   name: {
     type: DataTypes.STRING,
-    allowNull: false
   },
   price: {
     type: DataTypes.FLOAT,
-    allowNull: false
   },
   stock: {
     type: DataTypes.INTEGER,
-    allowNull: false
   },
   category: {
     type: DataTypes.STRING,
-    allowNull: false
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 });
+
+Product.associate = (models) => {
+  Product.hasMany(models.ProductSold, { foreignKey: 'ProductId' });
+};
 
 module.exports = Product;

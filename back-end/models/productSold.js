@@ -21,7 +21,12 @@ const ProductSold = sequelize.define('ProductSold', {
   totalPrice: {
     type: DataTypes.FLOAT,
     allowNull: false
-  }
+  },
+  ProductId: DataTypes.INTEGER,
 });
+
+ProductSold.associate = (models) => {
+  ProductSold.belongsTo(models.Product, { foreignKey: 'ProductId' });
+};
 
 module.exports = ProductSold;
