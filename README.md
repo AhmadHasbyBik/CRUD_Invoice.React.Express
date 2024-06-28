@@ -1,21 +1,5 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Instructions</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        ol {
-            line-height: 1.8;
-        }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-    </style>
-</head>
 <body>
     <h1>Instructions</h1>
     <ol>
