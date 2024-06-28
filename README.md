@@ -1,11 +1,35 @@
-1 Activate MySQL database.
-2 Create a database named "widatech-test".
-3 Navigate to the backend directory, write "cd back-end".
-4 Install dependencies, write "npm i".
-5 Run database migrations, write "npx sequelize db".
-6 Seed the database, write "npx sequelize db:seed".
-7 Start the backend server, write "npm start".
-8 Open a new terminal.
-9 Navigate to the frontend directory, write "cd front-end".
-10 Install dependencies, write "npm i".
-11 Start the frontend server, write "npm start".
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Instructions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        ol {
+            line-height: 1.8;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Instructions</h1>
+    <ol>
+        <li>Activate MySQL database.</li>
+        <li>Create a database named <code>"widatech-test"</code>.</li>
+        <li>Navigate to the backend directory, write <code>cd back-end</code>.</li>
+        <li>Install dependencies, write <code>npm i</code>.</li>
+        <li>Run database migrations, write <code>npx sequelize db:migrate</code>.</li>
+        <li>Seed the database, write <code>npx sequelize db:seed:all</code>.</li>
+        <li>Start the backend server, write <code>npm start</code>.</li>
+        <li>Open a new terminal.</li>
+        <li>Navigate to the frontend directory, write <code>cd front-end</code>.</li>
+        <li>Install dependencies, write <code>npm i</code>.</li>
+        <li>Start the frontend server, write <code>npm start</code>.</li>
+    </ol>
+</body>
+</html>
