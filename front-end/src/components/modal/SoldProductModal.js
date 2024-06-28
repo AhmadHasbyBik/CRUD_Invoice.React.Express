@@ -1,22 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import InvoiceModal from "./invoiceModal";
 
 const SoldProductModal = ({ product, onClose }) => {
-  const shipping = Math.floor(Math.random() * 5) + 1;
+  const shipping = useRef(Math.floor(Math.random() * 5) + 1);
   const [soldProductData, setSoldProductData] = useState({
     productId: product.id,
     item: product.name,
     quantity: 1,
     totalCogs: product.price,
-    totalPrice: product.price + shipping,
+    totalPrice: product.price + shipping.current, // Menggunakan shipping.current
   });
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const [productSoldId, setProductSoldId] = useState(null);
+
+  useEffect(() => {
+    shipping.current = Math.floor(Math.random() * 5) + 1;
+  }, []);
 
   const handleSoldProductChange = (e) => {
     const { name, value } = e.target;
     if (name === "quantity") {
       const newQuantity = parseInt(value, 10);
       const newTotalCogs = product.price * newQuantity;
-      const newTotalPrice = newTotalCogs + Math.floor(Math.random() * 5) + 1;
+      const newTotalPrice = newTotalCogs + shipping.current;
       setSoldProductData({
         ...soldProductData,
         [name]: newQuantity,
@@ -39,10 +46,17 @@ const SoldProductModal = ({ product, onClose }) => {
         soldProductData
       );
       console.log("Sold product saved:", response.data);
-      onClose();
+      setProductSoldId(response.data.id);
+      setShowInvoiceModal(true);
     } catch (error) {
       console.error("Error saving sold product:", error);
     }
+  };
+
+  const handleInvoiceSubmit = () => {
+    alert("Invoice submitted successfully!");
+    setShowInvoiceModal(false);
+    onClose();
   };
 
   return (
@@ -81,6 +95,9 @@ const SoldProductModal = ({ product, onClose }) => {
               readOnly
               className="mt-1 block w-full border rounded py-2 px-3"
             />
+            <p className="text-sm text-gray-500 mt-1">
+              Random shipping cost: ${shipping.current} {/* Menggunakan shipping.current */}
+            </p>
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Total Price</label>
@@ -106,6 +123,14 @@ const SoldProductModal = ({ product, onClose }) => {
           Close
         </button>
       </div>
+      {showInvoiceModal && (
+        <InvoiceModal
+          product={product}
+          productSoldId={productSoldId}
+          onClose={() => setShowInvoiceModal(false)}
+          onInvoiceSubmit={handleInvoiceSubmit}
+        />
+      )}
     </div>
   );
 };

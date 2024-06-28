@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addInvoice } from "../redux/invoiceSlice";
+import { addInvoice } from "../../redux/invoiceSlice";
 
-const InvoiceModal = ({ product, onClose, onShowSoldProductModal }) => {
+const InvoiceModal = ({ product, productSoldId, onClose, onInvoiceSubmit }) => {
   const dispatch = useDispatch();
-
+  
   const [invoiceData, setInvoiceData] = useState({
     date: "",
     customer: "",
     salesperson: "",
     paymentType: "Cash", // Default value
     notes: "",
-    quantity: 1,
+    ProductSoldId: productSoldId,
   });
 
   const handleChange = (e) => {
@@ -24,27 +24,28 @@ const InvoiceModal = ({ product, onClose, onShowSoldProductModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addInvoice({
-      ...invoiceData,
-      products: [
-        {
-          productId: product.id,
-        },
-      ],
-    }))
-    .unwrap()
-    .then(() => {
-      onShowSoldProductModal();
-      onClose();
-    })
-    .catch((error) => {
-      console.error("Error saving invoice:", error);
-    });
+    dispatch(
+      addInvoice({
+        ...invoiceData,
+        products: [
+          {
+            productId: product.id,
+          },
+        ],
+      })
+    )
+      .unwrap()
+      .then(() => {
+        onInvoiceSubmit();
+      })
+      .catch((error) => {
+        console.error("Error saving invoice:", error);
+      });
   };
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white rounded-lg p-6 w-1/2">
+      <div className="bg-white rounded-lg p-6 lg:w-1/3 sm:w-11/12">
         <h2 className="text-2xl font-bold mb-4">Create Invoice</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

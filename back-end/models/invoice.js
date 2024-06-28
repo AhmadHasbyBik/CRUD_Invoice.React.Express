@@ -4,6 +4,7 @@ const sequelize = new Sequelize('widatech-test', 'root', '', {
   dialect: 'mysql',
   host: 'localhost'
 });
+
 const Invoice = sequelize.define('Invoice', {
   date: {
     type: DataTypes.DATE,
@@ -23,7 +24,14 @@ const Invoice = sequelize.define('Invoice', {
   },
   notes: {
     type: DataTypes.TEXT
+  },
+  ProductSoldId: {
+    type: DataTypes.INTEGER,
   }
 });
+
+Invoice.associate = (models) => {
+  Invoice.belongsTo(models.ProductSold, { foreignKey: 'ProductSoldId' });
+};
 
 module.exports = Invoice;

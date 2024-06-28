@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addProduct } from '../redux/productSlice';
+import { addProduct } from '../../redux/productSlice';
 
 const CreateProductModal = ({ onClose }) => {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const CreateProductModal = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-      <div className="bg-white p-6 rounded-lg shadow-xl">
+      <div className="bg-white p-6 rounded-lg shadow-xl lg:w-1/3 sm:w-11/12">
         <h2 className="text-2xl font-bold mb-4">Create New Product</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -73,7 +73,7 @@ const CreateProductModal = ({ onClose }) => {
               name="price"
               value={formData.price}
               onChange={handleChange}
-              className="mt-1 block w-full w-full py-2 px-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="mt-1 block w-full py-2 px-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
           <div className="mb-4">
@@ -86,7 +86,7 @@ const CreateProductModal = ({ onClose }) => {
               name="stock"
               value={formData.stock}
               onChange={handleChange}
-              className="mt-1 block w-full w-full py-2 px-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="mt-1 block w-full py-2 px-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
           <div className="mb-4">
@@ -99,7 +99,7 @@ const CreateProductModal = ({ onClose }) => {
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="mt-1 block w-full w-full py-2 px-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="mt-1 block w-full py-2 px-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
           <div className="mb-4">
@@ -111,7 +111,7 @@ const CreateProductModal = ({ onClose }) => {
               id="image"
               name="image"
               onChange={handleImageChange}
-              className="mt-1 block w-full w-full py-2 px-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="mt-1 block w-full py-2 px-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
           <div className="flex justify-end">

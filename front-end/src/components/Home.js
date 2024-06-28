@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, selectAllProducts } from '../redux/productSlice';
-import ProductModal from './ProductModal';
+import ProductModal from '../components/modal/ProductModal';
 
 const Home = () => {
   const dispatch = useDispatch();

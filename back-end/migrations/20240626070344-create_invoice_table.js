@@ -9,6 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      ProductSoldId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'ProductSolds',
+          key: 'id'
+        }
+      },
       date: {
         type: Sequelize.DATE,
         allowNull: false

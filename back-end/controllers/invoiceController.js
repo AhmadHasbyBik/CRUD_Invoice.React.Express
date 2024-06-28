@@ -1,16 +1,24 @@
 // controllers/invoiceController.js
 const Invoice = require('../models/invoice');
-
+const ProductSold = require('../models/productSold');
 // Create
 exports.createInvoice = async (req, res) => {
   try {
-    const { date, customer, salesperson, paymentType, notes } = req.body;
+    const { date, customer, salesperson, paymentType, notes, ProductSoldId } = req.body;
+    
+    const productSold = await ProductSold.findByPk(ProductSoldId);
+
+    if (!productSold) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
     const newInvoice = await Invoice.create({
       date,
       customer,
       salesperson,
       paymentType,
-      notes
+      notes,
+      ProductSoldId
     });
     res.status(201).json(newInvoice);
   } catch (err) {

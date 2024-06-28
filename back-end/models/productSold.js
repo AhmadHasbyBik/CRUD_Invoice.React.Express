@@ -29,4 +29,8 @@ ProductSold.associate = (models) => {
   ProductSold.belongsTo(models.Product, { foreignKey: 'ProductId' });
 };
 
+ProductSold.associate = (models) => {
+  ProductSold.hasMany(models.Invoice, { foreignKey: 'ProductSoldId' });
+};
+
 module.exports = ProductSold;

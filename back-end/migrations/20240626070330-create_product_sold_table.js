@@ -17,14 +17,6 @@ module.exports = {
           key: 'id'
         }
       },
-      // InvoiceId: {
-      //   type: Sequelize.INTEGER,
-      //   allowNull: false,
-      //   references: {
-      //     model: 'Invoices',
-      //     key: 'id'
-      //   }
-      // },
       item: {
         type: Sequelize.STRING,
         allowNull: false
